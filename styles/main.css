@@ -74,7 +74,7 @@ body {
     box-shadow: 0 2px 4px #000000; 
 }
 
-.tile:hover {
+.tile:not(.disabled):hover {
     transform: scale(1.08);
     border-color: #dddddd;
     background-color: #1d1d1d;
@@ -90,4 +90,10 @@ body {
 
 .tile.wrong {
     background-color: rgb(255, 0, 0);
+}
+
+.tile.disabled {
+    pointer-events: none;
+    cursor: default;
+    transform: none;
 }

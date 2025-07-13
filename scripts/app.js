@@ -24,42 +24,53 @@ function init() {
     correctTiles = [];
     selectedTiles = [];
 
-        document.querySelector(".level").textContent = "Level: "+level;
-        document.querySelector(".score").textContent = "Score: "+score;
+    document.querySelector(".level").textContent = "Level: "+level;
+    document.querySelector(".score").textContent = "Score: "+score;
 
-        // loop through each tile and remove the highlight, selected, and wrong classes
+    // loop through each tile and remove the highlight, selected, and wrong classes
+    for(let i=0; i<tiles.length; i++) {
+        tiles[i].classList.remove("highlight");
+        tiles[i].classList.remove("selected");
+        tiles[i].classList.remove("wrong");
+    }
+
+    let count = Math.min(level+1, 7); // number of tiles to highlight (l1:3, l2: 5, l3: 7, l4: 9)
+    let highlighted = []; // tiles that will be highlighted
+
+    // keep picking random tiles until we reach the required number
+    while(highlighted.length < count) {
+        // pick a random tile from the grid
+        let randomTile = tiles[Math.floor(Math.random()*tiles.length)];
+
+        // only highlight the tile if its not already chosen
+        if(!highlighted.includes(randomTile)) {
+            highlighted.push(randomTile); // store in highlighted tiles array
+            correctTiles.push(randomTile); // also store it as a correct tile
+            randomTile.classList.add("highlight"); // highlight the tile
+        }
+    }
+
+    clickable = false;
+
+    // disable all tiles
+    for(let i=0; i<tiles.length; i++) {
+        tiles[i].classList.add("disabled");
+    }
+
+    setTimeout(function() {
+        for(let i=0; i<correctTiles.length; i++) {
+            correctTiles[i].classList.remove("highlight");
+        }
+        clickable = true; // allow clicks
+        
+        // enable interaction
         for(let i=0; i<tiles.length; i++) {
-            tiles[i].classList.remove("highlight");
-            tiles[i].classList.remove("selected");
-            tiles[i].classList.remove("wrong");
-        }
+        tiles[i].classList.remove("disabled");
+    }
 
-        let count = Math.min(level+1, 7); // number of tiles to highlight (l1:3, l2: 5, l3: 7, l4: 9)
-        let highlighted = []; // tiles that will be highlighted
+    }, 2000);
 
-        // keep picking random tiles until we reach the required number
-        while(highlighted.length < count) {
-            // pick a random tile from the grid
-            let randomTile = tiles[Math.floor(Math.random()*tiles.length)];
-
-            // only highlight the tile if its not already chosen
-            if(!highlighted.includes(randomTile)) {
-                highlighted.push(randomTile); // store in highlighted tiles array
-                correctTiles.push(randomTile); // also store it as a correct tile
-                randomTile.classList.add("highlight"); // highlight the tile
-            }
-        }
-
-        clickable = false;
-
-        setTimeout(function() {
-            for(let i=0; i<correctTiles.length; i++) {
-                correctTiles[i].classList.remove("highlight");
-            }
-            clickable = true; // allow clicks
-        }, 2000);
-
-        startTimer();
+    startTimer();
     }
 
     function startTimer() {
@@ -100,6 +111,7 @@ function init() {
         } else {
             tile.classList.add("wrong"); // highlight (red)
             clearInterval(timerId); // stop timer
+            clickable = false;
             setTimeout(restartLevel, 1000); 
             return;
         }
