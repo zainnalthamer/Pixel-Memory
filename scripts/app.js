@@ -7,6 +7,8 @@ function init() {
     let correctTiles = [];
     let selectedTiles = [];
 
+    let clickable = false;
+
     function createGrid() {
         const grid = document.querySelector("#grid");
         for(let i=0; i<36; i++) {
@@ -48,11 +50,14 @@ function init() {
             }
         }
 
+        clickable = false;
+
         setTimeout(function() {
             for(let i=0; i<correctTiles.length; i++) {
                 correctTiles[i].classList.remove("highlight");
             }
-        }, 4000);
+            clickable = true; // allow clicks
+        }, 2000);
 
         startTimer();
     }
@@ -77,6 +82,10 @@ function init() {
     }
 
     function handleTileClick(event) {
+        if(!clickable) {
+            return; // block clicks during preview
+        }
+
         const tile = event.target;
 
         // prevent double clicks
