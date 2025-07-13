@@ -87,3 +87,7 @@ body {
 .tile.selected {
     background-color: #29eaf8;
 }
+
+.tile.wrong {
+    background-color: rgb(255, 0, 0);
+}
