@@ -74,3 +74,16 @@ body {
     box-shadow: 0 2px 4px #000000; 
 }
 
+.tile:hover {
+    transform: scale(1.08);
+    border-color: #dddddd;
+    background-color: #1d1d1d;
+}
+
+.tile.highlight {
+    background-color: #9946ff;
+}
+
+.tile.selected {
+    background-color: #29eaf8;
+}
