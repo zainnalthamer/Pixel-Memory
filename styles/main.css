@@ -1,0 +1,76 @@
+body {
+    background-color: #181818;
+    color: #f0f0f0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    height: 900px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.container {
+    display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: -5px;
+}
+
+.title {
+    font-size: 36px;
+    margin-top: 70px;
+    color: #ffffff;
+}
+
+.instructionsBtn {
+    background-color: #181818;
+    color: #f0f0f0;
+    border: 1px solid #555555;
+    padding: 10px 24px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.instructionsBtn:hover {
+    background-color: #242424;
+    border-color: #777777;
+    color: #ffffff;
+}
+
+.status-bar {
+    display: flex;
+    justify-content: center;
+    gap: 95px;
+    margin: 10px 0;
+    font-weight: bold;
+    color: #bbbbbb;
+}
+
+.statusBar h2 {
+    font-size: 23px;
+}
+
+#grid {
+    display: grid;
+    grid-template-columns: repeat(6, 70px);
+    gap: 10px;
+    justify-content: center;
+    align-content: center;
+    padding: 10px;
+    margin-bottom: 30px;
+}
+
+.tile {
+    width: 70px;
+    height: 70px;
+    background-color: #181818;
+    border: 2px solid #585858;
+    border-radius: 12px;
+    transition: all 0.3s;
+    box-shadow: 0 2px 4px #000000; 
+}
+
