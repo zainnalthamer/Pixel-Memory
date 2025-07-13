@@ -4,11 +4,24 @@ function init() {
     let timer = null;
     let timerId = null;
 
-    let tiles = document.querySelectorAll(".tile");
     let correctTiles = [];
     let selectedTiles = [];
 
+    function createGrid() {
+        const grid = document.querySelector("#grid");
+        for(let i=0; i<36; i++) {
+            const tile = document.createElement("div");
+            tile.classList.add("tile");
+            tile.addEventListener("click", handleTileClick);
+            grid.appendChild(tile);
+        }
+    }
+
     function startLevel() {
+    // reset correct and selected tiles
+    correctTiles = [];
+    selectedTiles = [];
+
         document.querySelector(".level").textContent = "Level: "+level;
         document.querySelector(".score").textContent = "Score: "+score;
 
@@ -19,7 +32,7 @@ function init() {
             tiles[i].classList.remove("wrong");
         }
 
-        let count = level*2+1; // number of tiles to highlight (l1:3, l2: 5, l3: 7, l4: 9)
+        let count = Math.min(level+1, 7); // number of tiles to highlight (l1:3, l2: 5, l3: 7, l4: 9)
         let highlighted = []; // tiles that will be highlighted
 
         // keep picking random tiles until we reach the required number
@@ -34,6 +47,14 @@ function init() {
                 randomTile.classList.add("highlight"); // highlight the tile
             }
         }
+
+        setTimeout(function() {
+            for(let i=0; i<correctTiles.length; i++) {
+                correctTiles[i].classList.remove("highlight");
+            }
+        }, 4000);
+
+        startTimer();
     }
 
     function startTimer() {
@@ -93,17 +114,8 @@ function init() {
         setTimeout(startLevel, 1000); 
     }
 
-    function createGrid() {
-        const grid = document.querySelector("#grid");
-        for(let i=0; i<36; i++) {
-            const tile = document.createElement("div");
-            tile.classList.add("tile");
-            tile.addEventListener("click", handleTileClick);
-            grid.appendChild(tile);
-        }
-    }
-
     createGrid();
+    let tiles = document.querySelectorAll(".tile");
     startLevel();
 }
 
