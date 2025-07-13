@@ -34,18 +34,6 @@ function init() {
                 randomTile.classList.add("highlight"); // highlight the tile
             }
         }
-
-        // make tiles highlights fade after 4 seconds
-        setTimeout(function() {
-            for(let i=0; i<highlighted.length; i++) {
-                highlighted[i].classList.remove("highlight");
-            }
-            startTimer(); // start the countdown
-        }, 4000);
-    }
-
-    function handleTileClick() {
-
     }
 
     function createGrid() {
