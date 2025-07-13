@@ -84,6 +84,15 @@ function init() {
         startLevel();
     }
 
+    function nextLevel() {
+        clearInterval(timerId);
+
+        score = score+100;
+        level = level+1;
+
+        setTimeout(startLevel, 1000); 
+    }
+
     function createGrid() {
         const grid = document.querySelector("#grid");
         for(let i=0; i<36; i++) {
