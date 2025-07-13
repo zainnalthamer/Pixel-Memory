@@ -36,6 +36,54 @@ function init() {
         }
     }
 
+    function startTimer() {
+        let timeLeft = 20;
+        document.querySelector(".timer").textContent = "Time: "+timeLeft;
+
+        // start a countdown that runs every second
+        timerId = setInterval(function() {
+            timeLeft = timeLeft-1; // decrease time by 1 every second
+
+            // update timer
+            const timerDisplay = document.querySelector(".timer");
+            timerDisplay.textContent = "Time: "+timeLeft;
+
+            if(timeLeft===0) { // when time is up
+                clearInterval(timerId); // stop counting at 0
+                restartLevel();
+            }
+        }, 1000);
+    }
+
+    function handleTileClick(event) {
+        const tile = event.target;
+
+        // prevent double clicks
+        if(selectedTiles.includes(tile)) {
+            return;
+        }
+
+        selectedTiles.push(tile); // add tile to the selected tiles array
+
+        if(correctTiles.includes(tile)) { // if this tile exists in the correct tiles array
+            tile.classList.add("selected"); // highlight (cyan)
+        } else {
+            tile.classList.add("wrong"); // highlight (red)
+            clearInterval(timerId); // stop timer
+            setTimeout(restartLevel, 1000); 
+            return;
+        }
+
+        if(selectedTiles.length === correctTiles.length) {
+            nextLevel();
+        }
+    }
+
+    function restartLevel() {
+        clearInterval(timerId);
+        startLevel();
+    }
+
     function createGrid() {
         const grid = document.querySelector("#grid");
         for(let i=0; i<36; i++) {
