@@ -112,11 +112,18 @@ function init() {
             tile.classList.add("wrong"); // highlight (red)
             clearInterval(timerId); // stop timer
             clickable = false;
+
+            for(let i=0; i<correctTiles.length; i++) {
+                correctTiles[i].classList.add("disabled"); // disable all tiles to prevent hovering
+            }
             setTimeout(restartLevel, 1000); 
             return;
         }
 
         if(selectedTiles.length === correctTiles.length) {
+            for(let i=0; i<correctTiles.length; i++) {
+                correctTiles[i].classList.add("disabled"); // disable all tiles to prevent hovering
+            }
             nextLevel();
         }
     }
