@@ -142,8 +142,6 @@ function init() {
         setTimeout(startLevel, 1000); 
     }
 
-    
-
     createGrid();
     let tiles = document.querySelectorAll(".tile");
     startLevel();
@@ -164,3 +162,6 @@ function showInstructions() {
 }
 document.addEventListener("DOMContentLoaded", init);
 document.addEventListener("DOMContentLoaded", showInstructions);
+
+const restartBtn = document.querySelector(".restartBtn");
+restartBtn.addEventListener("click", init);
