@@ -142,9 +142,25 @@ function init() {
         setTimeout(startLevel, 1000); 
     }
 
+    
+
     createGrid();
     let tiles = document.querySelectorAll(".tile");
     startLevel();
 }
 
+function showInstructions() {
+        const popup = document.querySelector('.popup');
+        const instructionsBtn = document.querySelector('.instructionsBtn');
+        const closeBtn = document.querySelector('.closePopup');
+
+        instructionsBtn.addEventListener('click', function() {
+            popup.classList.remove('popup-hidden');
+        });
+
+        closeBtn.addEventListener('click', function() {
+            popup.classList.add('popup-hidden');
+        });
+}
 document.addEventListener("DOMContentLoaded", init);
+document.addEventListener("DOMContentLoaded", showInstructions);
