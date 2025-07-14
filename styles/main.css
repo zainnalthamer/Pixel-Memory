@@ -84,11 +84,11 @@ body {
     background-color: #9946ff;
 }
 
-.tile.selected {
+.tile.selected, .tile.selected:hover {
     background-color: #29eaf8;
 }
 
-.tile.wrong {
+.tile.wrong, .tile.wrong:hover {
     background-color: rgb(255, 0, 0);
 }
 
