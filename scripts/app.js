@@ -112,7 +112,17 @@ function init() {
             if (gameTimeLeft <= 0) {
                 clearInterval(gameTimerId);
                 gameActive = false;
-                endGame();
+                
+                if(gameTimeLeft<=0) {
+                    clearInterval(gameTimerId);
+                    gameActive = false;
+
+                    if(level<7) {
+                        endGame();
+                    } else {
+                        showWinPopup();
+                    }
+                }
             }
         }, 1000);
     }
