@@ -59,10 +59,6 @@ function init() {
     }
 
     function handleTileClick(event) {
-        const clickSound = document.querySelector("#clickSound");
-        clickSound.currentTime = 0; 
-        clickSound.play();
-
         if(!clickable || !gameActive) {
             return;
         }
@@ -72,6 +68,9 @@ function init() {
         }
         selectedTiles.push(tile);
         if(correctTiles.includes(tile)) {
+            const clickSound = document.querySelector("#clickSound");
+            clickSound.currentTime = 0; 
+            clickSound.play();
             tile.classList.add("selected");
         } else {
             tile.classList.add("wrong");
@@ -150,10 +149,6 @@ function init() {
     }
 
     function endGame() {
-        // const gameOverSound = document.querySelector("#gameOverSound)");
-        // gameOverSound.currentTime = 0; 
-        // gameOverSound.play();
-        
         clickable = false;
         for(let i=0; i<tiles.length; i++) {
             tiles[i].classList.add("disabled");
