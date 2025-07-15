@@ -34,6 +34,7 @@ function init() {
         tiles[i].classList.remove("highlight");
         tiles[i].classList.remove("selected");
         tiles[i].classList.remove("wrong");
+        tiles[i].classList.remove("missed");
     }
 
     let count = Math.min(level+1, 7); // number of tiles to highlight (l1:3, l2: 5, l3: 7, l4: 9)
@@ -115,7 +116,11 @@ function init() {
             clearInterval(timerId); // stop timer
             clickable = false;
 
+            // highlight missed tiles
             for(let i=0; i<correctTiles.length; i++) {
+                if(!selectedTiles.includes(correctTiles[i])) {
+                    correctTiles[i].classList.add("missed");
+                }
                 correctTiles[i].classList.add("disabled"); // disable all tiles to prevent hovering
             }
             setTimeout(restartLevel, 1000); 
@@ -123,10 +128,23 @@ function init() {
         }
 
         if(selectedTiles.length === correctTiles.length) {
+            // highlight correct tiles in green
             for(let i=0; i<correctTiles.length; i++) {
-                correctTiles[i].classList.add("disabled"); // disable all tiles to prevent hovering
+                correctTiles[i].classList.add("correct");
+                correctTiles[i].classList.add("disabled");
             }
-            nextLevel();
+
+            // wait briefly before moving to the next level
+            setTimeout(() => {
+                for(let i=0; i<tiles.length; i++) {
+                    tiles[i].classList.remove("correct");
+                }
+                nextLevel();
+            }, 1000);
+
+            // for(let i=0; i<correctTiles.length; i++) {
+            //     correctTiles[i].classList.add("disabled"); // disable all tiles to prevent hovering
+            // }
         }
     }
 
