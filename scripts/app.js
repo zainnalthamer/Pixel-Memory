@@ -59,6 +59,10 @@ function init() {
     }
 
     function handleTileClick(event) {
+        const clickSound = document.querySelector("#clickSound");
+        clickSound.currentTime = 0; 
+        clickSound.play();
+
         if(!clickable || !gameActive) {
             return;
         }
@@ -146,6 +150,10 @@ function init() {
     }
 
     function endGame() {
+        // const gameOverSound = document.querySelector("#gameOverSound)");
+        // gameOverSound.currentTime = 0; 
+        // gameOverSound.play();
+        
         clickable = false;
         for(let i=0; i<tiles.length; i++) {
             tiles[i].classList.add("disabled");
