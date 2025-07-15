@@ -1,18 +1,17 @@
 function init() {
     let level = 1;
     let score = 0;
-    let timer = null;
-    let timerId = null;
-
     let correctTiles = [];
     let selectedTiles = [];
-
     let clickable = false;
+    let gameTimeLeft = 20;
+    let gameTimerId = null;
+    let gameActive = true;
+    let tiles;
 
     function createGrid() {
         const grid = document.querySelector("#grid");
-        grid.innerHTML = ""; // clear existing tiles
-
+        grid.innerHTML = "";
         for(let i=0; i<36; i++) {
             const tile = document.createElement("div");
             tile.classList.add("tile");
@@ -22,174 +21,142 @@ function init() {
     }
 
     function startLevel() {
-    // reset correct and selected tiles
-    correctTiles = [];
-    selectedTiles = [];
-
-    document.querySelector(".level").textContent = "Level: "+level;
-    document.querySelector(".score").textContent = "Score: "+score;
-
-    // loop through each tile and remove the highlight, selected, and wrong classes
-    for(let i=0; i<tiles.length; i++) {
-        tiles[i].classList.remove("highlight");
-        tiles[i].classList.remove("selected");
-        tiles[i].classList.remove("wrong");
-        tiles[i].classList.remove("missed");
-    }
-
-    let count = Math.min(level+1, 7); // number of tiles to highlight (l1:3, l2: 5, l3: 7, l4: 9)
-    let highlighted = []; // tiles that will be highlighted
-
-    // keep picking random tiles until we reach the required number
-    while(highlighted.length < count) {
-        // pick a random tile from the grid
-        let randomTile = tiles[Math.floor(Math.random()*tiles.length)];
-
-        // only highlight the tile if its not already chosen
-        if(!highlighted.includes(randomTile)) {
-            highlighted.push(randomTile); // store in highlighted tiles array
-            correctTiles.push(randomTile); // also store it as a correct tile
-            randomTile.classList.add("highlight"); // highlight the tile
-        }
-    }
-
-    clickable = false;
-
-    // disable all tiles
-    for(let i=0; i<tiles.length; i++) {
-        tiles[i].classList.add("disabled");
-    }
-
-    setTimeout(function() {
-        for(let i=0; i<correctTiles.length; i++) {
-            correctTiles[i].classList.remove("highlight");
-        }
-        clickable = true; // allow clicks
-        
-        // enable interaction
+        correctTiles = [];
+        selectedTiles = [];
+        document.querySelector(".level").textContent = "Level: "+level;
+        document.querySelector(".score").textContent = "Score: "+score;
         for(let i=0; i<tiles.length; i++) {
-        tiles[i].classList.remove("disabled");
-    }
-
-    }, 2000);
-
-    startTimer();
-    }
-
-    function startTimer() {
-        let timeLeft = 20;
-        document.querySelector(".timer").textContent = "Time: "+timeLeft;
-
-        // start a countdown that runs every second
-        timerId = setInterval(function() {
-            timeLeft = timeLeft-1; // decrease time by 1 every second
-
-            // update timer
-            const timerDisplay = document.querySelector(".timer");
-            timerDisplay.textContent = "Time: "+timeLeft;
-
-            if(timeLeft===0) { // when time is up
-                clearInterval(timerId); // stop counting at 0
-                restartLevel();
+            tiles[i].classList.remove("highlight");
+            tiles[i].classList.remove("selected");
+            tiles[i].classList.remove("wrong");
+            tiles[i].classList.remove("missed");
+            tiles[i].classList.remove("correct");
+            tiles[i].classList.remove("disabled");
+        }
+        let count = Math.min(level+1, 7);
+        let highlighted = [];
+        while(highlighted.length < count) {
+            let randomTile = tiles[Math.floor(Math.random()*tiles.length)];
+            if(!highlighted.includes(randomTile)) {
+                highlighted.push(randomTile);
+                correctTiles.push(randomTile);
+                randomTile.classList.add("highlight");
             }
-        }, 1000);
+        }
+        clickable = false;
+        for(let i=0; i<tiles.length; i++) {
+            tiles[i].classList.add("disabled");
+        }
+        setTimeout(function() {
+            for(let i=0; i<correctTiles.length; i++) {
+                correctTiles[i].classList.remove("highlight");
+            }
+            clickable = true;
+            for(let i=0; i<tiles.length; i++) {
+                tiles[i].classList.remove("disabled");
+            }
+        }, 2000);
     }
 
     function handleTileClick(event) {
-        if(!clickable) {
-            return; // block clicks during preview
+        if(!clickable || !gameActive) {
+            return;
         }
-
         const tile = event.target;
-
-        // prevent double clicks
         if(selectedTiles.includes(tile)) {
             return;
         }
-
-        selectedTiles.push(tile); // add tile to the selected tiles array
-
-        if(correctTiles.includes(tile)) { // if this tile exists in the correct tiles array
-            tile.classList.add("selected"); // highlight (cyan)
+        selectedTiles.push(tile);
+        if(correctTiles.includes(tile)) {
+            tile.classList.add("selected");
         } else {
-            tile.classList.add("wrong"); // highlight (red)
-            clearInterval(timerId); // stop timer
-            clickable = false;
-
-            // highlight missed tiles
+            tile.classList.add("wrong");
             for(let i=0; i<correctTiles.length; i++) {
                 if(!selectedTiles.includes(correctTiles[i])) {
                     correctTiles[i].classList.add("missed");
                 }
-                correctTiles[i].classList.add("disabled"); // disable all tiles to prevent hovering
+                correctTiles[i].classList.add("disabled");
             }
-            setTimeout(restartLevel, 1000); 
+            clickable = false;
+            setTimeout(endGame, 1000);
             return;
         }
-
         if(selectedTiles.length === correctTiles.length) {
-            // highlight correct tiles in green
             for(let i=0; i<correctTiles.length; i++) {
                 correctTiles[i].classList.add("correct");
                 correctTiles[i].classList.add("disabled");
             }
-
-            // wait briefly before moving to the next level
+            clickable = false;
+            score += 100;
             setTimeout(() => {
                 for(let i=0; i<tiles.length; i++) {
                     tiles[i].classList.remove("correct");
                 }
-                nextLevel();
-            }, 1000);
-
-            // for(let i=0; i<correctTiles.length; i++) {
-            //     correctTiles[i].classList.add("disabled"); // disable all tiles to prevent hovering
-            // }
+                level++;
+                startLevel();
+            }, 600);
         }
     }
 
-    function restartLevel() {
-        clearInterval(timerId);
-        startLevel();
-    }
-
-    function nextLevel() {
-        clearInterval(timerId);
-
-        score = score+100;
-        level = level+1;
-
-        setTimeout(startLevel, 1000); 
+    function startGameTimer() {
+        document.querySelector(".timer").textContent = "Time: " + gameTimeLeft;
+        gameTimerId = setInterval(function() {
+            gameTimeLeft--;
+            document.querySelector(".timer").textContent = "Time: " + gameTimeLeft;
+            if (gameTimeLeft <= 0) {
+                clearInterval(gameTimerId);
+                gameActive = false;
+                endGame();
+            }
+        }, 1000);
     }
 
     function restartGame() {
-        clearInterval(timerId);
+        clearInterval(gameTimerId);
+        gameTimeLeft = 20;
+        gameActive = true;
         level = 1;
         score = 0;
         selectedTiles = [];
         correctTiles = [];
         clickable = false;
-
+        createGrid();
+        tiles = document.querySelectorAll(".tile");
         startLevel();
+        startGameTimer();
+    }
+
+    function endGame() {
+        clickable = false;
+        for(let i=0; i<tiles.length; i++) {
+            tiles[i].classList.add("disabled");
+        }
+        document.querySelector(".finalScore").textContent = "Final Score: " + score;
+        document.querySelector(".gameOverPopup").classList.remove("popup-hidden");
+        alert("Game Over! Your score: " + score);
     }
 
     createGrid();
-    let tiles = document.querySelectorAll(".tile");
+    tiles = document.querySelectorAll(".tile");
     startLevel();
+    startGameTimer();
+
+    const restartBtn = document.querySelector(".restartBtn");
+    if(restartBtn) {
+        restartBtn.addEventListener("click", restartGame);
+    }
 }
 
 function showInstructions() {
-        const popup = document.querySelector('.popup');
-        const instructionsBtn = document.querySelector('.instructionsBtn');
-        const closeBtn = document.querySelector('.closePopup');
-
-        instructionsBtn.addEventListener('click', function() {
-            popup.classList.remove('popup-hidden');
-        });
-
-        closeBtn.addEventListener('click', function() {
-            popup.classList.add('popup-hidden');
-        });
+    const popup = document.querySelector('.popup');
+    const instructionsBtn = document.querySelector('.instructionsBtn');
+    const closeBtn = document.querySelector('.closePopup');
+    instructionsBtn.addEventListener('click', function() {
+        popup.classList.remove('popup-hidden');
+    });
+    closeBtn.addEventListener('click', function() {
+        popup.classList.add('popup-hidden');
+    });
 }
 
 document.addEventListener("DOMContentLoaded", function() {
