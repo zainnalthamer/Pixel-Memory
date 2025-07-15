@@ -92,6 +92,12 @@ function init() {
                 for(let i=0; i<tiles.length; i++) {
                     tiles[i].classList.remove("correct");
                 }
+
+                if(level===7) {
+                    gameActive = false;
+                    showWinPopup();
+                    return;
+                }
                 level++;
                 startLevel();
             }, 600);
@@ -144,7 +150,18 @@ function init() {
         gameoverPopup.classList.add("popup-hidden");
         restartGame();
     });
+    }
 
+    function showWinPopup() {
+        const gameoverPopup = document.querySelector(".gameover-popup");
+        gameoverPopup.classList.remove("popup-hidden");
+        document.querySelector(".gameOverText").textContent = "You Win!";
+        document.querySelector(".finalScore").textContent = "Final Score: " + score;
+        const playAgainBtn = document.querySelector(".playAgainBtn");
+        playAgainBtn.addEventListener("click", function () {
+        gameoverPopup.classList.add("popup-hidden");
+        restartGame();
+    });
     }
 
     createGrid();
