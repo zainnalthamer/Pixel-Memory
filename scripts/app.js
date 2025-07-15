@@ -4,7 +4,7 @@ function init() {
     let correctTiles = [];
     let selectedTiles = [];
     let clickable = false;
-    let gameTimeLeft = 30;
+    let gameTimeLeft = 20;
     let gameTimerId = null;
     let gameActive = true;
     let tiles;
@@ -81,7 +81,7 @@ function init() {
                 correctTiles[i].classList.add("disabled");
             }
             clickable = false;
-            setTimeout(endGame, 1000);
+            endGame();
             return;
         }
         if(selectedTiles.length === correctTiles.length) {
@@ -123,7 +123,7 @@ function init() {
                     clearInterval(gameTimerId);
                     gameActive = false;
 
-                    if(level<7) {
+                    if(level<=7) {
                         endGame();
                     } else {
                         showWinPopup();
@@ -135,7 +135,7 @@ function init() {
 
     function restartGame() {
         clearInterval(gameTimerId);
-        gameTimeLeft = 30;
+        gameTimeLeft = 20;
         gameActive = true;
         level = 1;
         score = 0;
@@ -152,6 +152,8 @@ function init() {
     }
 
     function endGame() {
+        clearInterval(gameTimerId);
+
         document.querySelector("#gameOverSound").play();
 
         clickable = false;
@@ -171,6 +173,8 @@ function init() {
     }
 
     function showWinPopup() {
+        clearInterval(gameTimerId);
+
         document.querySelector("#winSound").play();
         
         const gameoverPopup = document.querySelector(".gameover-popup");
