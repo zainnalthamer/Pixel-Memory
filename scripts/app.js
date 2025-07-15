@@ -11,6 +11,8 @@ function init() {
 
     function createGrid() {
         const grid = document.querySelector("#grid");
+        grid.innerHTML = ""; // clear existing tiles
+
         for(let i=0; i<36; i++) {
             const tile = document.createElement("div");
             tile.classList.add("tile");
@@ -142,6 +144,17 @@ function init() {
         setTimeout(startLevel, 1000); 
     }
 
+    function restartGame() {
+        clearInterval(timerId);
+        level = 1;
+        score = 0;
+        selectedTiles = [];
+        correctTiles = [];
+        clickable = false;
+
+        startLevel();
+    }
+
     createGrid();
     let tiles = document.querySelectorAll(".tile");
     startLevel();
@@ -160,8 +173,13 @@ function showInstructions() {
             popup.classList.add('popup-hidden');
         });
 }
-document.addEventListener("DOMContentLoaded", init);
-document.addEventListener("DOMContentLoaded", showInstructions);
 
-const restartBtn = document.querySelector(".restartBtn");
-restartBtn.addEventListener("click", init);
+document.addEventListener("DOMContentLoaded", function() {
+    init();
+    showInstructions();
+
+    const restartBtn = document.querySelector(".restartBtn");
+    if(restartBtn) {
+        restartBtn.addEventListener("click", init); {
+    }
+    }});
