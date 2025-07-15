@@ -102,6 +102,9 @@ function init() {
                     return;
                 }
                 level++;
+                const nextLevelSound = document.querySelector("#nextLevelSound");
+                nextLevelSound.currentTime = 0;
+                nextLevelSound.play();
                 startLevel();
             }, 600);
         }
@@ -149,6 +152,8 @@ function init() {
     }
 
     function endGame() {
+        document.querySelector("#gameOverSound").play();
+
         clickable = false;
         for(let i=0; i<tiles.length; i++) {
             tiles[i].classList.add("disabled");
@@ -166,6 +171,8 @@ function init() {
     }
 
     function showWinPopup() {
+        document.querySelector("#winSound").play();
+        
         const gameoverPopup = document.querySelector(".gameover-popup");
         gameoverPopup.classList.remove("popup-hidden");
         document.querySelector(".gameOverText").textContent = "You Win!";
