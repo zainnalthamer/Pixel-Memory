@@ -4,7 +4,7 @@ function init() {
     let correctTiles = [];
     let selectedTiles = [];
     let clickable = false;
-    let gameTimeLeft = 20;
+    let gameTimeLeft = 30;
     let gameTimerId = null;
     let gameActive = true;
     let tiles;
@@ -55,7 +55,7 @@ function init() {
             for(let i=0; i<tiles.length; i++) {
                 tiles[i].classList.remove("disabled");
             }
-        }, 2000);
+        }, 800);
     }
 
     function handleTileClick(event) {
@@ -113,13 +113,16 @@ function init() {
 
     function restartGame() {
         clearInterval(gameTimerId);
-        gameTimeLeft = 20;
+        gameTimeLeft = 30;
         gameActive = true;
         level = 1;
         score = 0;
         selectedTiles = [];
         correctTiles = [];
         clickable = false;
+
+        document.querySelector(".gameover-popup").classList.add("popup-hidden");
+
         createGrid();
         tiles = document.querySelectorAll(".tile");
         startLevel();
@@ -131,9 +134,17 @@ function init() {
         for(let i=0; i<tiles.length; i++) {
             tiles[i].classList.add("disabled");
         }
+
+        const gameoverPopup = document.querySelector(".gameover-popup");
+        gameoverPopup.classList.remove("popup-hidden");
+
         document.querySelector(".finalScore").textContent = "Final Score: " + score;
-        document.querySelector(".gameOverPopup").classList.remove("popup-hidden");
-        alert("Game Over! Your score: " + score);
+        const playAgainBtn = document.querySelector(".playAgainBtn");
+        playAgainBtn.addEventListener("click", function() {
+        gameoverPopup.classList.add("popup-hidden");
+        restartGame();
+    });
+
     }
 
     createGrid();
@@ -165,6 +176,6 @@ document.addEventListener("DOMContentLoaded", function() {
 
     const restartBtn = document.querySelector(".restartBtn");
     if(restartBtn) {
-        restartBtn.addEventListener("click", init); {
+        restartBtn.addEventListener("click", init);
     }
-    }});
+});
