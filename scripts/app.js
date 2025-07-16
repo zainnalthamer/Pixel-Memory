@@ -1,3 +1,91 @@
+// PSEUDOCODE FOR PIXEL MEMORY
+
+/* 
+Game Flow:
+1. On page load, the game starts.
+2. User can view the instructions by clicking the instructions button.
+3. User can click the restart button to re-start the game.
+4. At each level:
+    a. A grid of tiles is generated.
+    b. A few tiles are randomly highlighted and shown for a short period.
+    c. Tiles return to normal, and the user clicks tiles they remember.
+    d. If all selections are correct:
+        - Level increases
+        - Score increases
+        - Feedback and sound play
+        - Next level starts
+    e. If the user clicks a wrong tile:
+        - Game over popup is displayed
+        - Sound effect plays
+5. If the user reaches level 7 before time runs out, a win popup is shown.
+6. A timer counts down from 45 seconds, if it hits 0, the game ends with 'Game Over'.
+7. After game ends, user can click the 'play again' button to restart from level 1.
+*/
+
+/* VARIABLES USED
+- level: current level (starts at 1)
+- score: total score
+- correctTiles: array of correct tile elements for current level
+- selectedTiles: array of tiles the user has clicked
+- clickable: flag to prevent clicks during animation
+- gameTimeLeft: time left for the whole game
+- gameTimerId: interval timer ID for countdown
+- gameActive: flag for whether the game is in progress
+- tiles: NodeList of all tile elements
+*/
+
+/* EVENTS
+- On DOMContentLoaded: init() + showInstructions()
+- Instructions button: opens instructions popup
+- Close button: hides instructions popup
+- Restart button: calls restartGame()
+- Play Again button: hides popup and restarts game
+- Each tile: on click, runs handleTileClick()
+*/
+
+/* MAIN FUNCTIONS
+init()
+- Initializes variables and UI
+- Creates the grid
+- Starts the first level
+- Starts the countdown timer
+
+createGrid()
+- Creates 36 clickable tiles in the grid
+
+startLevel()
+- Clears previous tile states
+- Highlights random correct tiles based on level
+- Temporarily disables clicking
+- After delay, hides highlights and allows user interaction
+
+handleTileClick(tile)
+- If tile is correct: add selected class and play click sound
+- If tile is incorrect: add wrong class, disable all, endGame()
+- If all correct tiles selected: highlight success, increase score, move to next level or showWinPopup()
+
+startGameTimer()
+- Decrements gameTimeLeft every second
+- If time reaches 0, ends game
+
+restartGame()
+- Resets all game state
+- Starts from level 1 with score 0 and 45 seconds
+
+endGame()
+- Stops timer
+- Plays game over sound
+- Shows game over popup and final score
+
+showWinPopup()
+- Stops timer
+- Plays win sound
+- Shows final score and win message
+
+showInstructions()
+- Toggles visibility of instructions popup
+*/
+
 function init() {
     let level = 1;
     let score = 0;
