@@ -13,9 +13,9 @@
 
 I was tasked to build a grid-based game for project 1 of the Software Engineering course at General Assembly. Pixel Memory is a tile-based memory game where players must remember and select the correct tiles as levels progress. The game tests memory, accuracy, and speed with an increasing level of difficulty.
 
-<img width="1346" height="1683" alt="Screenshot of the game featuring the game title, game state, and a grid with highlighted tiles." src="https://github.com/user-attachments/assets/2193ad2f-96ee-41d6-998a-940792f7c848" />
-
 [Project Plan](https://drive.google.com/file/d/1T4fWt54vrFo7DoWW4d_j4ULX6kQmmoRt/view?usp=sharing)
+
+<img width="1346" height="1683" alt="Screenshot of the game featuring the game title, game state, and a grid with highlighted tiles." src="https://github.com/user-attachments/assets/2193ad2f-96ee-41d6-998a-940792f7c848" />
 
 ## Project Requirements
 - Includes win/loss logic with appropriate messages.
