@@ -161,11 +161,6 @@ function init() {
         gameoverPopup.classList.remove("popup-hidden");
 
         document.querySelector(".finalScore").textContent = "Final Score: " + score;
-        // const playAgainBtn = document.querySelector(".playAgainBtn");
-        // playAgainBtn.addEventListener("click", function() {
-        // gameoverPopup.classList.add("popup-hidden");
-        // restartGame();
-    // });
     }
 
     function showWinPopup() {
@@ -177,11 +172,6 @@ function init() {
         gameoverPopup.classList.remove("popup-hidden");
         document.querySelector(".gameOverText").textContent = "You Win!";
         document.querySelector(".finalScore").textContent = "Final Score: " + score;
-    //     const playAgainBtn = document.querySelector(".playAgainBtn");
-    //     playAgainBtn.addEventListener("click", function () {
-    //     gameoverPopup.classList.add("popup-hidden");
-    //     restartGame();
-    // });
     }
 
     createGrid();
