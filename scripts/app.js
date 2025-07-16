@@ -87,7 +87,7 @@ showInstructions()
 */
 
 function init() {
-    let level = 1;
+    let level = 1; 
     let score = 0;
     let correctTiles = [];
     let selectedTiles = [];
@@ -97,6 +97,7 @@ function init() {
     let gameActive = true;
     let tiles;
 
+    // function to create the grid of tiles
     function createGrid() {
         const grid = document.querySelector("#grid");
         grid.innerHTML = "";
@@ -117,15 +118,15 @@ function init() {
             tiles[i].classList.remove("highlight");
             tiles[i].classList.remove("selected");
             tiles[i].classList.remove("wrong");
-            tiles[i].classList.remove("missed");
-            tiles[i].classList.remove("correct");
             tiles[i].classList.remove("disabled");
         }
-        let count = Math.min(level+1, 7);
+        let count = Math.min(level+1, 7); // limit to 7 tiles max
         let highlighted = [];
         while(highlighted.length < count) {
-            let randomTile = tiles[Math.floor(Math.random()*tiles.length)];
-            if(!highlighted.includes(randomTile)) {
+            let randomTile = tiles[Math.floor(Math.random()*tiles.length)]; // get a random tile
+            if(!highlighted.includes(randomTile)) { // ensure tile is not already highlighted
+
+                // add the tile to the highlighted list and correct tiles
                 highlighted.push(randomTile);
                 correctTiles.push(randomTile);
                 randomTile.classList.add("highlight");
@@ -133,9 +134,9 @@ function init() {
         }
         clickable = false;
         for(let i=0; i<tiles.length; i++) {
-            tiles[i].classList.add("disabled");
+            tiles[i].classList.add("disabled"); // disable all tiles
         }
-        setTimeout(function() {
+        setTimeout(function() { // after 800ms, remove highlights and enable tiles
             for(let i=0; i<correctTiles.length; i++) {
                 correctTiles[i].classList.remove("highlight");
             }
@@ -155,27 +156,25 @@ function init() {
             return;
         }
         selectedTiles.push(tile);
-        if(correctTiles.includes(tile)) {
+        if(correctTiles.includes(tile)) { // if the tile is correct
             const clickSound = document.querySelector("#clickSound");
             clickSound.currentTime = 0; 
             clickSound.play();
-            tile.classList.add("selected");
+            tile.classList.add("selected"); // add selected class
         } else {
-            tile.classList.add("wrong");
+            tile.classList.add("wrong"); // add wrong class
             for(let i=0; i<correctTiles.length; i++) {
-                if(!selectedTiles.includes(correctTiles[i])) {
-                    correctTiles[i].classList.add("missed");
-                }
                 correctTiles[i].classList.add("disabled");
             }
             clickable = false;
             endGame();
             return;
         }
+        // check if all correct tiles have been selected
         if(selectedTiles.length === correctTiles.length) {
             for(let i=0; i<correctTiles.length; i++) {
-                correctTiles[i].classList.add("correct");
-                correctTiles[i].classList.add("disabled");
+                correctTiles[i].classList.add("correct"); // add correct class
+                correctTiles[i].classList.add("disabled"); // disable correct tiles
             }
             clickable = false;
             score += 100;
@@ -184,7 +183,7 @@ function init() {
                     tiles[i].classList.remove("correct");
                 }
 
-                if(level===7) {
+                if(level===7) { // if level 7 is reached
                     gameActive = false;
                     showWinPopup();
                     return;
@@ -200,16 +199,16 @@ function init() {
 
     function startGameTimer() {
         document.querySelector(".timer").textContent = "Time: " + gameTimeLeft;
-        gameTimerId = setInterval(function() {
+        gameTimerId = setInterval(function() { // decrement the game time every second
             gameTimeLeft--;
             document.querySelector(".timer").textContent = "Time: " + gameTimeLeft;
             if (gameTimeLeft <= 0) {
                 clearInterval(gameTimerId);
                 gameActive = false;
 
-                    if(level<=7) {
+                    if(level<=7) { // if the user has not reached level 7
                         endGame();
-                    } else {
+                    } else { // if the user has reached level 7
                         showWinPopup();
                     }
             }
@@ -217,7 +216,8 @@ function init() {
     }
 
     function restartGame() {
-        clearInterval(gameTimerId);
+        // reset all game state
+        clearInterval(gameTimerId); // clear the timer
         gameTimeLeft = 40;
         gameActive = true;
         level = 1;
@@ -236,21 +236,23 @@ function init() {
     }
 
     function endGame() {
-        clearInterval(gameTimerId);
+        clearInterval(gameTimerId); // stop the timer
 
         document.querySelector("#gameOverSound").play();
 
-        clickable = false;
+        clickable = false; // prevent further clicks
         for(let i=0; i<tiles.length; i++) {
             tiles[i].classList.add("disabled");
         }
 
+        // show game over popup
         const gameoverPopup = document.querySelector(".gameover-popup");
         gameoverPopup.classList.remove("popup-hidden");
 
         document.querySelector(".finalScore").textContent = "Final Score: " + score;
     }
 
+    // function to show the win popup
     function showWinPopup() {
         clearInterval(gameTimerId);
 
@@ -285,7 +287,7 @@ function showInstructions() {
     const popup = document.querySelector('.popup');
     const instructionsBtn = document.querySelector('.instructionsBtn');
     const closeBtn = document.querySelector('.closePopup');
-    instructionsBtn.addEventListener('click', function() {
+    instructionsBtn.addEventListener('click', function() { // show the instructions popup
         popup.classList.remove('popup-hidden');
     });
     closeBtn.addEventListener('click', function() {
@@ -297,6 +299,7 @@ document.addEventListener("DOMContentLoaded", function() {
     init();
     showInstructions();
 
+    // add event listener for restart button
     const restartBtn = document.querySelector(".restartBtn");
     if(restartBtn) {
         restartBtn.addEventListener("click", init);
