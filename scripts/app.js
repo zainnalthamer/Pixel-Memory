@@ -298,10 +298,4 @@ function showInstructions() {
 document.addEventListener("DOMContentLoaded", function() {
     init();
     showInstructions();
-
-    // add event listener for restart button
-    const restartBtn = document.querySelector(".restartBtn");
-    if(restartBtn) {
-        restartBtn.addEventListener("click", init);
-    }
 });
